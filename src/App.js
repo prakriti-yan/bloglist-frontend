@@ -27,6 +27,10 @@ function App() {
         username: username, 
         password: password
       })
+
+      window.localStorage.setItem(
+        'loggedBlogUser', JSON.stringify(user)
+      )
       setUser(user)
       setUsername('')
       setPassword('')
