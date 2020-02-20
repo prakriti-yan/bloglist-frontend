@@ -1,48 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import loginService from './services/login'
 import blogService from './services/blogs'
-
-const BlogForm = (props) =>{
-  const { createBlog, title, setTitle, author, setAuthor, url, setUrl} = props
-  return (
-    <div>
-      <h2>create new</h2>
-      <form onSubmit={createBlog}>
-      <div>
-        title:
-        <input
-        type="text"
-        value={title}
-        name="Title"
-        onChange={({target})=> setTitle(target.value)}/>
-      </div>
-      <div>
-        author:
-        <input 
-        type = "text"
-        value = {author}
-        name = "Author"
-        onChange={({target})=> setAuthor(target.value)}/>
-      </div>
-      <div>
-        url:
-        <input 
-        type = "text"
-        value = {url}
-        name = "Url"
-        onChange={({target})=> setUrl(target.value)}/>
-      </div>
-      <button type= "submit">create</button>
-    </form>
-    </div>
-  )
-}
+import BlogForm from './components/BlogForm'
+import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import BlogTitle from './components/BlogTitle'
 
 function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [notice, setNotice] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -75,10 +44,17 @@ function App() {
         'author': author,
         'url': url
       })
+      if (newBlog){
+        const message = `a new blog "${newBlog.title}" has been added by "${newBlog.author}"!`
+      setNotice(message)
+      setTimeout(()=>{
+        setNotice(null)
+      }, 4000)
       setBlogs(blogs.concat(newBlog))
       setTitle('')
       setAuthor('')
-      setUrl('')
+      setUrl('')}
+      
     }catch(exception){
       console.log(exception)
     }
@@ -101,57 +77,42 @@ function App() {
       setPassword('')
 
     }catch(exception){
-      setErrorMessage('Wrong credientials')
+      setErrorMessage('Wrong username or password!')
+      setUsername('')
+      setPassword('')
       setTimeout(()=>{
         setErrorMessage(null)
-      }, 5000)
+      }, 4000)
+
     }
   }
 
-  const handleLogout = () =>{
+  const handleLogout = (event) =>{
+    event.preventDefault()
     window.localStorage.removeItem('loggedBlogUser')
     setUser(null)
   }
 
-  const printBlog = () =>blogs.map(blog=>{
-    return (
-      <p key={blog.id}>
-        {blog.title}  {blog.author}
-      </p>
-    )
-  })
   
 
   if (user === null){
-  return ( 
-    <div>
-      <h1>log in to application</h1>
-      <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-        type="text"
-        value={username}
-        name="Username"
-        onChange={({target})=> setUsername(target.value)}/>
-      </div>
-      <div>
-        password
-        <input 
-        type = "text"
-        value = {password}
-        name = "Password"
-        onChange={({target})=> setPassword(target.value)}/>
-      </div>
-      <button type= "submit">login</button>
-    </form>
-    </div>
-  )}
+    return (
+    <LoginForm
+    errorMessage={errorMessage}
+    handleLogin={handleLogin}
+    username={username}
+    setUsername={setUsername}
+    password={password}
+    setPassword={setPassword}
+    />)
+  }
   return (
     <div>
-      <h2>blogs</h2>
+      <BlogTitle 
+      notice= {notice}
+      />
       <p>{user.username} is logged in! <button onClick={handleLogout}>logout</button></p>
-      <br></br>
+      <br/>
         <BlogForm 
         createBlog={createBlog}
         title={title}
@@ -159,8 +120,16 @@ function App() {
         author={author}
         setAuthor={setAuthor}
         url={url} setUrl={setUrl}/>
-        {/* {printBlog()} */}
-        
+       <br/>
+       <h2>List</h2>
+        {blogs? blogs.map(blog=>
+        <Blog 
+        key={blog.id}
+        blogs={blogs}
+        blog={blog}
+        setBlogs={setBlogs}
+        />)
+        :null}
     </div>
   )
 }
