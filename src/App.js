@@ -119,7 +119,8 @@ function App() {
         setTitle={setTitle}
         author={author}
         setAuthor={setAuthor}
-        url={url} setUrl={setUrl}/>
+        url={url} setUrl={setUrl}
+        />
        <br/>
        <h2>List</h2>
         {blogs? blogs.map(blog=>
