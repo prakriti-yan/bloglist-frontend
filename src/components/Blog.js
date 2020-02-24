@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import propTypes from 'prop-types'
 
-const Blog = (props) =>{
-  const {blogs, blog, setBlogs, user} = props
+const Blog = (props) => {
+  const { blogs, blog, setBlogs, user } = props
   const [visible, setVisible] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -15,25 +16,22 @@ const Blog = (props) =>{
   const infoStyle = {
     display: visible? '':'none'
   }
-  const buttonStyle = {
-    // display: (blog.author===user.username ||  blog.user.username===user.username)? '': 'none' 
-  }
-  const handleDelete = async () =>{
-    // event.preventDefault()
+
+  const handleDelete = async () => {
     if (window.confirm(`Are you sure to remove ${blog.title}`)){
       const response = await blogService.remove(blog.id)
       if (response === 204){
         console.log('successfully deleted!')
-        setBlogs(blogs.filter(b=>b.id !== blog.id))
+        setBlogs(blogs.filter(b => b.id !== blog.id))
       }
     }
   }
-  const toggInfo = () =>{
+  const toggInfo = () => {
     setVisible(!visible)
     console.log(blog.user)
     console.log(user.username)
   }
-  const addLikes = async() =>{
+  const addLikes = async() => {
     await blogService.update(blog.id, {
       user: blog.user,
       likes: blog.likes + 1,
@@ -42,28 +40,34 @@ const Blog = (props) =>{
       url: blog.url
     })
     const blogs = await blogService.getAll()
-    setBlogs(blogs)    
+    setBlogs(blogs)
   }
 
   return(
     <div style={blogStyle}>
       <div  key={blog.id} onClick={toggInfo}>
-      {blog.title}  {blog.author} 
+        {blog.title}  {blog.author}
       </div>
       <div style={infoStyle}>
         {blog.url}<br/>
         {blog.likes}likes
-         <button  onClick={addLikes}>like</button>
-         <br/>
+        <button  onClick={addLikes}>like</button>
+        <br/>
          added by {blog.author}
-         <br/>
-         {(blog.author===user.username) &&
-         <button onClick={handleDelete} style={buttonStyle}>remove</button>
-         }
-        
+        <br/>
+        {(blog.author===user.username) &&
+         <button onClick={handleDelete}>remove</button>
+        }
       </div>
-     </div> 
+    </div>
   )
+}
+
+Blog.propTypes = {
+  blogs: propTypes.array.isRequired,
+  blog: propTypes.object.isRequired,
+  setBlogs: propTypes.func.isRequired,
+  user: propTypes.object.isRequired
 }
 
 export default Blog
