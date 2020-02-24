@@ -5,6 +5,7 @@ import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogTitle from './components/BlogTitle'
+import Togglable from './components/Togglable';
 
 function App() {
   const [username, setUsername] = useState('')
@@ -113,6 +114,7 @@ function App() {
       />
       <p>{user.username} is logged in! <button onClick={handleLogout}>logout</button></p>
       <br/>
+      <Togglable buttonLable='new note'>
         <BlogForm 
         createBlog={createBlog}
         title={title}
@@ -121,6 +123,7 @@ function App() {
         setAuthor={setAuthor}
         url={url} setUrl={setUrl}
         />
+      </Togglable>
        <br/>
        <h2>List</h2>
         {blogs? blogs.map(blog=>
@@ -129,6 +132,7 @@ function App() {
         blogs={blogs}
         blog={blog}
         setBlogs={setBlogs}
+        user={user}
         />)
         :null}
     </div>
