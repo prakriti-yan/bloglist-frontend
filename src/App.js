@@ -6,6 +6,7 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogTitle from './components/BlogTitle'
 import Togglable from './components/Togglable'
+import './global.css'
 
 function App() {
   const [username, setUsername] = useState('')
