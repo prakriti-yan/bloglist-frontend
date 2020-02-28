@@ -111,9 +111,9 @@ function App() {
       <BlogTitle
         notice= {notice}
       />
-      <p>{user.username} is logged in! <button onClick={handleLogout}>logout</button></p>
+      <p className='font'>{user.username} is logged in! <button onClick={handleLogout}>logout</button></p>
       <br/>
-      <Togglable buttonLable='new note'>
+      <Togglable buttonLable='create new note'>
         <BlogForm
           createBlog={createBlog}
           title={title}
@@ -124,7 +124,7 @@ function App() {
         />
       </Togglable>
       <br/>
-      <h2>List</h2>
+      <h2 >List</h2>
       {blogs? blogs.map(blog =>
         <Blog
           key={blog.id}

@@ -1,29 +1,28 @@
 import React from 'react'
+import '../global.css'
 
 const BlogForm = (props) => {
   const { createBlog, title, setTitle, author, setAuthor, url, setUrl } = props
   return (
     <div>
-      <h2>Create new</h2>
-      <form onSubmit={createBlog}>
-        <div>
-		title:
+      <h2>Create new blog</h2>
+      <form onSubmit={createBlog} className='font'>
+        <div className='form-group'>
+          <label>Title:</label>
           <input
             type="text"
             value={title}
             name="Title"
             onChange={({ target }) => setTitle(target.value)}/>
-        </div>
-        <div>
-		author:
+          <br/>
+          <label>Author:</label>
           <input
             type = "text"
             value = {author}
             name = "Author"
             onChange={({ target }) => setAuthor(target.value)}/>
-        </div>
-        <div>
-		url:
+          <br/>
+          <label>Url:</label>
           <input
             type = "text"
             value = {url}

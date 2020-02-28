@@ -5,14 +5,6 @@ import '../global.css'
 const Blog = (props) => {
   const { blogs, blog, setBlogs, user } = props
   const [visible, setVisible] = useState(false)
-  // const blogStyle = {
-  //   paddingTop: 10,
-  //   paddingLeft: 2,
-  //   border: 'solid',
-  //   borderWidth: 1,
-  //   marginBottom: 5,
-  //   cursor: 'pointer'
-  // }
   const infoStyle = {
     display: visible? '':'none'
   }
@@ -46,14 +38,14 @@ const Blog = (props) => {
   return(
     <div className='blogSection'>
       <div  key={blog.id} onClick={toggInfo} className='title'>
-        {blog.title}  {blog.author}
+        {blog.title} by <i>{blog.author}</i>
       </div>
       <div style={infoStyle} className='togglebox'>
-        {blog.url}<br/>
-        {blog.likes}likes
+        Url: {blog.url}<br/>
+        There are {blog.likes} likes for this post
         <button  onClick={addLikes}>like</button>
         <br/>
-         added by {blog.author}
+         Added by <i>{blog.author}</i>
         <br/>
         {(blog.author===user.username) &&
          <button onClick={handleDelete}>remove</button>
