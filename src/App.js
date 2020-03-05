@@ -7,17 +7,18 @@ import LoginForm from './components/LoginForm'
 import BlogTitle from './components/BlogTitle'
 import Togglable from './components/Togglable'
 import './global.css'
+import { useField } from './hooks'
 
 function App() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('text')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [notice, setNotice] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   useEffect(() => {
     getBlogs()
@@ -42,9 +43,9 @@ function App() {
     event.preventDefault()
     try{
       const newBlog = await blogService.create({
-        'title': title,
-        'author': author,
-        'url': url
+        'title': title.value,
+        'author': author.value,
+        'url': url.value
       })
       if (newBlog){
         const message = `a new blog "${newBlog.title}" has been added by "${newBlog.author}"!`
@@ -53,9 +54,10 @@ function App() {
           setNotice(null)
         }, 4000)
         setBlogs(blogs.concat(newBlog))
-        setTitle('')
-        setAuthor('')
-        setUrl('')}
+        title.clearField()
+        author.clearField()
+        url.clearField()
+      }
     }catch(exception){
       console.log(exception)
     }
@@ -65,8 +67,8 @@ function App() {
     event.preventDefault()
     try{
       const user = await loginService.login({
-        username: username,
-        password: password
+        username: username.value,
+        password: password.value
       })
 
       window.localStorage.setItem(
@@ -74,17 +76,14 @@ function App() {
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
 
     }catch(exception){
       setErrorMessage('Wrong username or password!')
-      setUsername('')
-      setPassword('')
+      username.clearField()
+      password.clearField()
       setTimeout(() => {
         setErrorMessage(null)
       }, 4000)
-
     }
   }
 
@@ -101,9 +100,7 @@ function App() {
         errorMessage={errorMessage}
         handleLogin={handleLogin}
         username={username}
-        setUsername={setUsername}
         password={password}
-        setPassword={setPassword}
       />)
   }
   return (
@@ -117,10 +114,8 @@ function App() {
         <BlogForm
           createBlog={createBlog}
           title={title}
-          setTitle={setTitle}
           author={author}
-          setAuthor={setAuthor}
-          url={url} setUrl={setUrl}
+          url={url}
         />
       </Togglable>
       <br/>

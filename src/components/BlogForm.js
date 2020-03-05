@@ -1,38 +1,43 @@
 import React from 'react'
 import '../global.css'
+import propTypes from 'prop-types'
 
 const BlogForm = (props) => {
-  const { createBlog, title, setTitle, author, setAuthor, url, setUrl } = props
+  const { createBlog, title, author, url } = props
+
+  const titleAtr = { ...title }
+  const authorAtr = { ...author }
+  const urlAtr = { ...url }
+
+  delete titleAtr.clearField
+  delete authorAtr.clearField
+  delete urlAtr.clearField
+
   return (
     <div>
       <h2>Create new blog</h2>
       <form onSubmit={createBlog} className='font'>
         <div className='form-group'>
           <label>Title:</label>
-          <input
-            type="text"
-            value={title}
-            name="Title"
-            onChange={({ target }) => setTitle(target.value)}/>
+          <input {...titleAtr} />
           <br/>
           <label>Author:</label>
-          <input
-            type = "text"
-            value = {author}
-            name = "Author"
-            onChange={({ target }) => setAuthor(target.value)}/>
+          <input {...authorAtr} />
           <br/>
           <label>Url:</label>
-          <input
-            type = "text"
-            value = {url}
-            name = "Url"
-            onChange={({ target }) => setUrl(target.value)}/>
+          <input {...urlAtr} />
         </div>
         <button type= "submit">create</button>
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  createBlog: propTypes.func.isRequired,
+  title: propTypes.object.isRequired,
+  author: propTypes.object.isRequired,
+  url: propTypes.object.isRequired
 }
 
 export default BlogForm

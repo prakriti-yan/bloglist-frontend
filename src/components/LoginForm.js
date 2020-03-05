@@ -3,7 +3,14 @@ import Notification from '../components/Notification'
 import '../global.css'
 
 const LoginForm = (props) => {
-  const { handleLogin, username, setUsername, password, setPassword, errorMessage } = props
+  const { handleLogin, username, password, errorMessage } = props
+
+  const userAtr = { ...username }
+  const passAtr = { ...password }
+
+  delete userAtr.clearField
+  delete passAtr.clearField
+
   return (
     <div>
       <h2 >Log in to application</h2>
@@ -14,18 +21,10 @@ const LoginForm = (props) => {
       <form onSubmit={handleLogin} className='font'>
         <div className='form-group'>
           <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}/>
+          <input {...userAtr} />
           <br/>
           <label>Password:</label>
-          <input
-            type = "text"
-            value = {password}
-            name = "Password"
-            onChange={({ target }) => setPassword(target.value)}/>
+          <input {...passAtr} />
         </div>
         <button type= "submit">login</button>
       </form>

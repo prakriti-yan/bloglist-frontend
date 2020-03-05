@@ -22,7 +22,7 @@ describe('<App />', () => {
       password:'Demo',
       token: 'token'
     }
-    window.localStorage.setItem('loggedBlogUser', JSON.stringify(user)) 
+    window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
     const component = render(<App />)
     component.rerender(<App />)
     await waitForElement(

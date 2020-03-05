@@ -1,6 +1,5 @@
 import React from 'react'
 import Notification from './Notification'
-import propTypes from 'prop-types'
 import '../global.css'
 
 const BlogTitle =(props) => {
@@ -13,10 +12,6 @@ const BlogTitle =(props) => {
       success={true}/>
   </>
   )
-}
-
-BlogTitle.propTypes = {
-  notice: propTypes.string.isRequired,
 }
 
 export default BlogTitle
